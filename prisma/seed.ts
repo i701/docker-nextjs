@@ -1,13 +1,25 @@
-import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+
+const todos = [
+	{
+		title: "Create a prisma project",
+	},
+	{
+		title: "Add Prisma Client",
+	},
+	{
+		title: "Add Prisma Migrate",
+	},
+	{
+		title: "Run Prisma Migrate",
+	},
+];
 
 async function main() {
 	try {
 		await prisma.todo.createMany({
-			data: Array.from({ length: 10 }, () => ({
-				title: faker.internet.domainName(),
-			})),
+			data: todos,
 		});
 	} catch (e) {
 		console.error(e);

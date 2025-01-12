@@ -44,7 +44,18 @@ COPY --from=builder --chown=node /app/prisma ./prisma
 COPY --from=builder --chown=node /app/.next/standalone ./
 
 
-RUN npm install --global --save-exact "prisma@$(node --print 'require("./node_modules/@prisma/client/package.json").version')"
+
+# Copy only the required node_modules for Prisma
+COPY --from=builder --chown=node /app/node_modules/.prisma /app/node_modules/.prisma
+COPY --from=builder --chown=node /app/node_modules/@prisma /app/node_modules/@prisma
+COPY --from=builder --chown=node /app/node_modules/prisma /app/node_modules/prisma
+
+
+
+RUN npm install --global --save-exact "prisma@$(node --print 'require("./node_modules/@prisma/client/package.json").version')" && \
+    npm install --global --save-exact "ts-node@$(node --print 'require("./package.json").devDependencies["ts-node"]')" && \
+    chown -R node:node /usr/local/lib/node_modules/prisma
+
 COPY start.sh /usr/local/bin
 
 ENV CHECKPOINT_DISABLE=1
