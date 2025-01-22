@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/i701/your-repo:latest
+    image: ghcr.io/i701/docker-nextjs:main
     ports:
       - '3000:3000'
     env_file:
